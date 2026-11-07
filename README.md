@@ -31,7 +31,8 @@ Consolidação da base documental para ingestão no NotebookLM, diretrizes de ne
 ---
 
 ### 🔹 [Fase 2 — Modelagem e Documentação UML](./Artefatos/Fase2/)
-Pacote completo com os **5 diagramas UML formais** da arquitetura do Bank OnlineX, disponíveis tanto em notação **Mermaid (Markdown)** quanto em arquivos editáveis do **draw.io (`.drawio`)**:
+Pacote completo com os **5 diagramas UML formais** da arquitetura do Bank OnlineX, disponíveis em documento consolidado com os diagramas renderizados em imagem (**PDF**), em notação **Mermaid (Markdown)** e em arquivos editáveis do **draw.io (`.drawio`)**:
+- 📕 [**Especificação Visual e Documentação Técnica UML — Etapa 2 (PDF)**](./Artefatos/Fase2/fase-2-modelagem-uml-bank-onlinex.pdf)
 - 📝 [**Documentação Consolidada dos Diagramas UML em Mermaid (Markdown)**](./Artefatos/Fase2/Diagramas_Etapa2_Bank_OnlineX.md)
 - 🗂️ [**Arquivo Consolidado Multipágina — Todos os 5 Diagramas (`.drawio`)**](./Artefatos/Fase2/Diagramas_Etapa2_Bank_OnlineX.drawio)
 - **Diagramas Individuais (`.drawio`):**
@@ -110,7 +111,8 @@ Fechamento executivo da POC (Semana 10) consolidando o parecer formal de aprova�
     │   ├── 04_Classes_DDD_Bank_OnlineX.drawio
     │   ├── 05_Implantacao_MultiAZ_Bank_OnlineX.drawio
     │   ├── Diagramas_Etapa2_Bank_OnlineX.drawio
-    │   └── Diagramas_Etapa2_Bank_OnlineX.md
+    │   ├── Diagramas_Etapa2_Bank_OnlineX.md
+    │   └── fase-2-modelagem-uml-bank-onlinex.pdf
     ├── Fase3/
     │   ├── Memorial_Detalhado_Sizing_e_Topologia_Etapa3.md
     │   ├── Topologia_MultiAZ_Sizing_Fase3_Bank_OnlineX.drawio
