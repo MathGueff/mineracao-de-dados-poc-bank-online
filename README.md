@@ -68,6 +68,12 @@ Demonstração ponta a ponta do ecossistema de Inteligência Artificial governad
 
 ---
 
+### 🔹 [Fase 6 — Consolidação, Custos (FinOps), Lições Aprendidas e Decisão de Investimento](./Artefatos/Fase6/)
+Fechamento executivo da POC (Semana 10) consolidando o parecer formal de aprovação (**Decisão GO**) do Comitê de Arquitetura, reconciliação dos 5 KPIs (`KPI-01` a `KPI-05`), orçamento detalhado em nuvem (`+6,4%` vs. limite de `±20%`), lições aprendidas (`ADR-001` a `ADR-005` + metodologia NotebookLM) e roadmap de implantação em produção e homologação regulatória (BACEN/LGPD):
+- 📕 [**Relatório Final de Consolidação e Decisão de Investimento — Etapa 6 (PDF)**](./Artefatos/Fase6/fase-6-relatorio-consolidacao-bank-onlinex.pdf)
+
+---
+
 ## 📊 Síntese dos Requisitos Não-Funcionais (SLOs) e KPIs
 
 | ID | Requisito / Indicador | Meta Oficial (SLO / KPI) | Solução Arquitetural e Validação na POC |
@@ -81,7 +87,10 @@ Demonstração ponta a ponta do ecossistema de Inteligência Artificial governad
 | **`RNF-07`** | **Observabilidade** | `MTTD < 5 min` / `MTTR < 30 min` | OpenTelemetry + Prometheus/Grafana + Jaeger + ELK + Alertmanager (`MTTD = 1m42s`) |
 | **`RNF-08`** | **Recuperação (DR)** | `RPO ≤ 5 min` / `RTO ≤ 60 min` | Standby síncrono Multi-AZ (`RPO=0` intra-região), réplicas cross-region e runbooks DR |
 | **`KPI-01`** | **Desempenho MVP** | `10.000 TPS` com `P99 < 800 ms` sustentados | Homologado na Fase 4 (`P99 = 380 ms` em `10k TPS` e `P99 = 742 ms` em `32,5k TPS`) |
+| **`KPI-02`** | **Rastreabilidade** | `100%` das afirmações citam fonte do NotebookLM | Grounding integral validado nas revisões técnicas das Etapas 1 a 6 |
+| **`KPI-03`** | **Qualidade UML** | Zero divergências críticas entre UML e fontes | 5 diagramas formais aprovados em *design review* na Fase 2 |
 | **`KPI-04`** | **IA Governada** | `100%` citações RAG + aprovação humana | Homologado na Fase 5 via servidores MCP, guardrails e evento assinado `RecomendacaoAprovada` |
+| **`KPI-05`** | **Custos (FinOps)** | Variação máxima de `±20%` vs. orçamento | Homologado na Fase 6 com variação de **`+6,4%`** (`US$ 574.560/ano` vs. `US$ 540.000/ano`) |
 
 ---
 
@@ -111,8 +120,10 @@ Demonstração ponta a ponta do ecossistema de Inteligência Artificial governad
     │   ├── Relatorio_Execucao_Carga_e_Prototipo_Etapa4.md
     │   ├── fase-4-plano-testes-cargabank-onlinex.pdf
     │   └── k6_load_test_etapa4.js
-    └── Fase5/
-        ├── Arquitetura_Integracao_IA_MCP_Fase5_Bank_OnlineX.drawio
-        ├── Memorial_Demo_Integracao_IA_e_Governanca_MCP_Etapa5.md
-        └── fase-5-plano-integracao-ia-bank-onlinex.pdf
+    ├── Fase5/
+    │   ├── Arquitetura_Integracao_IA_MCP_Fase5_Bank_OnlineX.drawio
+    │   ├── Memorial_Demo_Integracao_IA_e_Governanca_MCP_Etapa5.md
+    │   └── fase-5-plano-integracao-ia-bank-onlinex.pdf
+    └── Fase6/
+        └── fase-6-relatorio-consolidacao-bank-onlinex.pdf
 ```
