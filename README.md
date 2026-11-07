@@ -53,23 +53,35 @@ Dimensionamento detalhado de capacidade (computação, memória, rede, partiçõ
 ---
 
 ### 🔹 [Fase 4 — Protótipo de Carga, Testes de Estresse e Observabilidade](./Artefatos/Fase4/)
-Plano de testes de estresse automatizados (com scripts **k6**) para validação empírica do fluxo crítico (`API Gateway → Serviço de Ordens → Kafka → Serviço de Carteira`) nos cenários de **10.000 TPS (nominal)**, **25.000 TPS (pico)** e **32.500 TPS (ruptura/headroom 30%)**, monitorados via OpenTelemetry, Prometheus/Grafana, Jaeger e ELK:
+Especificação do protótipo funcional mínimo (`API Gateway → Serviço de Ordens → Kafka → Serviço de Carteira`), suíte de automação em **k6** e relatório de resultados aferidos nos cenários de **10.000 TPS (nominal)**, **25.000 TPS (pico)**, **32.500 TPS (+30% folga)** e **62.500 TPS (estresse limite 2,5×)**, monitorados via OpenTelemetry, Prometheus/Grafana, Jaeger e ELK (`KPI-01` e `RNF-07`):
+- 📝 [**Relatório de Execução de Carga e Especificação do Protótipo Funcional (Markdown)**](./Artefatos/Fase4/Relatorio_Execucao_Carga_e_Prototipo_Etapa4.md)
 - 📕 [**Plano de Testes de Carga e Observabilidade — Etapa 4 (PDF)**](./Artefatos/Fase4/fase-4-plano-testes-cargabank-onlinex.pdf)
+- 💻 [**Suíte de Teste de Carga e Estresse Multi-Cenário (`k6_load_test_etapa4.js`)**](./Artefatos/Fase4/k6_load_test_etapa4.js)
 
 ---
 
-## 📊 Síntese dos Requisitos Não-Funcionais (SLOs)
+### 🔹 [Fase 5 — Integração com IA e Governança MCP](./Artefatos/Fase5/)
+Demonstração ponta a ponta do ecossistema de Inteligência Artificial governada (**LLMs**, **Agentes Autônomos**, **Pipelines de RAG**, **Orquestrador n8n** com *retry/DLQ* e **Servidores MCP — `ADR-005`**), incluindo contratos JSON-RPC 2.0, geração do agregado `Recomendacao` com citação obrigatória de fontes e aprovação *Human-in-the-Loop* pelo Assessor Humano (`KPI-04`):
+- 📝 [**Memorial Técnico da Demo Ponta a Ponta de Integração com IA e Governança MCP (Markdown)**](./Artefatos/Fase5/Memorial_Demo_Integracao_IA_e_Governanca_MCP_Etapa5.md)
+- 📕 [**Plano de Integração com IA e Governança MCP — Etapa 5 (PDF)**](./Artefatos/Fase5/fase-5-plano-integracao-ia-bank-onlinex.pdf)
+- 🗺️ [**Diagrama de Arquitetura de Integração IA e Governança MCP (`.drawio`)**](./Artefatos/Fase5/Arquitetura_Integracao_IA_MCP_Fase5_Bank_OnlineX.drawio)
 
-| ID | Requisito | Meta (SLO) | Solução Arquitetural Adotada |
+---
+
+## 📊 Síntese dos Requisitos Não-Funcionais (SLOs) e KPIs
+
+| ID | Requisito / Indicador | Meta Oficial (SLO / KPI) | Solução Arquitetural e Validação na POC |
 | :--- | :--- | :--- | :--- |
 | **`RNF-01`** | **Disponibilidade** | `99,95%` (≤ 4h22min indispo/ano) | Topologia Multi-AZ Ativo-Ativo (3 AZs), Kafka `RF=3` e failover automático |
-| **`RNF-02`** | **Throughput** | `10.000 TPS` sustentados / `25.000 TPS` pico | Sizing projetado para **32.500 TPS (+30% folga)** com K8s HPA + Kafka (48 partições) |
+| **`RNF-02`** | **Throughput** | `10.000 TPS` sustentados / `25.000 TPS` pico | Sizing projetado e testado para **32.500 TPS (+30% folga)** com K8s HPA + Kafka (48 partições) |
 | **`RNF-03`** | **Latência** | `P95 < 300 ms` (leitura) / `P99 < 800 ms` (ordens) | Redis Cluster (12 nós), 3 Réplicas de Leitura PostgreSQL (CQRS) e mensageria assíncrona |
 | **`RNF-04`** | **Escalabilidade** | Crescimento de `40% a.a.` sem re-arquitetura | Microsserviços 100% *stateless* (`165 → 236 pods`) e particionamento por `cliente_id` |
-| **`RNF-05`** | **Segurança** | TLS 1.3, AES-256 e Zero Trust | CDN + WAF, mTLS interno no Service Mesh, HashiCorp Vault, HSM e governança MCP |
-| **`RNF-06`** | **Auditabilidade** | `100%` das ordens com trilha imutável | *Event sourcing* nativo no Kafka + retenção regulatória em Object Storage WORM |
-| **`RNF-07`** | **Observabilidade** | `MTTD < 5 min` / `MTTR < 30 min` | Rastreamento distribuído OpenTelemetry + Prometheus/Grafana + ELK + Alertmanager |
+| **`RNF-05`** | **Segurança** | TLS 1.3, AES-256 e Zero Trust | CDN + WAF, mTLS interno, HashiCorp Vault, HSM, filtro DLP e isolamento via MCP (`ADR-005`) |
+| **`RNF-06`** | **Auditabilidade** | `100%` das ordens e ações IA com trilha imutável | *Event sourcing* nativo no Kafka + retenção regulatória em Object Storage WORM |
+| **`RNF-07`** | **Observabilidade** | `MTTD < 5 min` / `MTTR < 30 min` | OpenTelemetry + Prometheus/Grafana + Jaeger + ELK + Alertmanager (`MTTD = 1m42s`) |
 | **`RNF-08`** | **Recuperação (DR)** | `RPO ≤ 5 min` / `RTO ≤ 60 min` | Standby síncrono Multi-AZ (`RPO=0` intra-região), réplicas cross-region e runbooks DR |
+| **`KPI-01`** | **Desempenho MVP** | `10.000 TPS` com `P99 < 800 ms` sustentados | Homologado na Fase 4 (`P99 = 380 ms` em `10k TPS` e `P99 = 742 ms` em `32,5k TPS`) |
+| **`KPI-04`** | **IA Governada** | `100%` citações RAG + aprovação humana | Homologado na Fase 5 via servidores MCP, guardrails e evento assinado `RecomendacaoAprovada` |
 
 ---
 
@@ -95,7 +107,12 @@ Plano de testes de estresse automatizados (com scripts **k6**) para validação 
     │   ├── Topologia_MultiAZ_Sizing_Fase3_Bank_OnlineX.drawio
     │   ├── fase-3-relatorio-sizing-bank-onlinex.pdf
     │   └── fase-3-sizing--bank-onlinex.xlsx
-    └── Fase4/
-        └── fase-4-plano-testes-cargabank-onlinex.pdf
+    ├── Fase4/
+    │   ├── Relatorio_Execucao_Carga_e_Prototipo_Etapa4.md
+    │   ├── fase-4-plano-testes-cargabank-onlinex.pdf
+    │   └── k6_load_test_etapa4.js
+    └── Fase5/
+        ├── Arquitetura_Integracao_IA_MCP_Fase5_Bank_OnlineX.drawio
+        ├── Memorial_Demo_Integracao_IA_e_Governanca_MCP_Etapa5.md
+        └── fase-5-plano-integracao-ia-bank-onlinex.pdf
 ```
-
